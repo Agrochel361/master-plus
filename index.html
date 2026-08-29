@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Сантехник в Ереване — ремонт ванной под ключ, замена труб | SANTEX-EREVAN</title>
 
 <link rel="icon" type="image/png" href="/favicon.png">
@@ -66,15 +66,26 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  width: 100%;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 
 body {
   font-family: 'DM Sans', sans-serif;
   background: var(--white);
   color: var(--charcoal);
   line-height: 1.65;
+  width: 100%;
   overflow-x: hidden;
+  position: relative;
 }
+
+/* Any element that would otherwise force horizontal scroll gets clipped */
+img, video, iframe, table, .services-grid, .about-grid, .contact-grid { max-width: 100%; }
 
 h1, h2, h3, h4, h5 { font-family: 'Playfair Display', serif; line-height: 1.15; }
 
@@ -90,23 +101,29 @@ img { max-width: 100%; display: block; }
   top: 0; left: 0;
   width: var(--sidebar-w);
   height: 100vh;
+  height: 100dvh;
   background: var(--black);
   display: flex;
   flex-direction: column;
   z-index: 500;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   transition: transform var(--transition);
 }
 
 .main-content {
   margin-left: var(--sidebar-w);
   min-height: 100vh;
+  min-height: 100dvh;
+  width: calc(100% - var(--sidebar-w));
+  overflow-x: hidden;
 }
 
 /* ============================================================
    SIDEBAR
 ============================================================ */
 .sidebar-logo {
+  position: relative;
   padding: 40px 32px 28px;
   border-bottom: 1px solid rgba(255,255,255,.08);
 }
@@ -138,6 +155,29 @@ img { max-width: 100%; display: block; }
   height: 2px;
   background: var(--red);
   margin: 16px 0 0;
+}
+
+/* Close button — only shown on mobile, when sidebar is fullscreen */
+.sidebar-close-btn {
+  display: none;
+  position: absolute;
+  top: max(20px, env(safe-area-inset-top, 0px));
+  right: max(20px, env(safe-area-inset-right, 0px));
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,.08);
+  color: var(--white);
+  font-size: 1.15rem;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.sidebar-close-btn:hover {
+  background: var(--red);
 }
 
 .sidebar-nav {
@@ -188,7 +228,7 @@ img { max-width: 100%; display: block; }
 }
 
 .sidebar-footer {
-  padding: 24px 32px;
+  padding: 24px 32px calc(24px + env(safe-area-inset-bottom, 0px));
   border-top: 1px solid rgba(255,255,255,.08);
 }
 
@@ -262,11 +302,13 @@ img { max-width: 100%; display: block; }
   display: none;
   position: fixed;
   top: 0; left: 0; right: 0;
-  height: 60px;
+  height: calc(60px + env(safe-area-inset-top, 0px));
+  padding-top: env(safe-area-inset-top, 0px);
   background: var(--black);
   z-index: 600;
   align-items: center;
-  padding: 0 20px;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
   gap: 16px;
   box-shadow: 0 2px 16px rgba(0,0,0,.3);
 }
@@ -303,7 +345,8 @@ img { max-width: 100%; display: block; }
    SECTIONS SHARED
 ============================================================ */
 .section {
-  padding: 100px 64px;
+  padding: clamp(56px, 9vw, 100px) clamp(20px, 6vw, 64px);
+  width: 100%;
 }
 
 .section-inner {
@@ -338,12 +381,14 @@ img { max-width: 100%; display: block; }
 ============================================================ */
 #home {
   min-height: 100vh;
+  min-height: 100dvh;
   background: var(--black);
   display: flex;
   align-items: flex-end;
   position: relative;
   overflow: hidden;
   padding: 80px 64px;
+  width: 100%;
 }
 
 .hero-bg {
@@ -506,7 +551,7 @@ img { max-width: 100%; display: block; }
 
 .about-img-wrap img {
   width: 100%;
-  height: 500px;
+  height: clamp(240px, 45vw, 500px);
   object-fit: cover;
   border-radius: var(--radius);
 }
@@ -604,7 +649,7 @@ img { max-width: 100%; display: block; }
 
 .gallery-main img {
   width: 100%;
-  height: 580px;
+  height: clamp(260px, 52vw, 580px);
   object-fit: cover;
   transition: opacity .4s ease;
 }
@@ -774,12 +819,19 @@ img { max-width: 100%; display: block; }
   background: var(--grey);
 }
 
+.price-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}
+
 .price-table {
   width: 100%;
+  min-width: 480px;
   border-collapse: collapse;
-  border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: var(--shadow-md);
 }
 
 .price-table thead tr {
@@ -1019,8 +1071,8 @@ select.form-control { cursor: pointer; }
 ============================================================ */
 .wa-float {
   position: fixed;
-  bottom: 36px;
-  right: 36px;
+  bottom: max(36px, calc(env(safe-area-inset-bottom, 0px) + 20px));
+  right: max(36px, calc(env(safe-area-inset-right, 0px) + 20px));
   z-index: 1000;
   width: 66px; height: 66px;
   background: #25D366;
@@ -1066,35 +1118,64 @@ select.form-control { cursor: pointer; }
    RESPONSIVE
 ============================================================ */
 @media (max-width: 1100px) {
-  .section { padding: 80px 40px; }
   .services-grid { grid-template-columns: repeat(2, 1fr); }
   .about-grid { gap: 40px; }
 }
 
 @media (max-width: 900px) {
-  #mySidebar { transform: translateX(-100%); }
+  #mySidebar {
+    width: 100%;
+    max-width: 100vw;
+    transform: translateX(-100%);
+    z-index: 700;
+  }
   #mySidebar.open { transform: translateX(0); }
-  .main-content { margin-left: 0; }
+  .sidebar-close-btn { display: flex; }
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding-top: calc(60px + env(safe-area-inset-top, 0px));
+  }
   #mobileHeader { display: flex; }
-  .main-content { padding-top: 60px; }
-  #home { padding: 60px 28px 60px; min-height: 90vh; }
-  .hero-stats { gap: 28px; flex-wrap: wrap; }
-  .section { padding: 64px 28px; }
+  #home { min-height: 90vh; min-height: 90dvh; }
+  .hero-stats { gap: 24px; flex-wrap: wrap; row-gap: 20px; }
   .about-grid { grid-template-columns: 1fr; }
-  .about-img-wrap img { height: 300px; }
-  .about-badge { bottom: -16px; right: 10px; width: 95px; height: 95px; }
+  .about-badge { bottom: -16px; right: 10px; width: 90px; height: 90px; }
   .form-row { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
   .checkbox-grid { grid-template-columns: repeat(2, 1fr); }
   .guarantees { grid-template-columns: 1fr; }
   .form-card { padding: 28px 20px; }
+  .wa-float { width: 56px; height: 56px; font-size: 1.4rem; bottom: max(20px, calc(env(safe-area-inset-bottom, 0px) + 12px)); right: max(20px, calc(env(safe-area-inset-right, 0px) + 12px)); }
 }
 
 @media (max-width: 600px) {
   .services-grid { grid-template-columns: 1fr; }
-  .hero-cta-group { flex-direction: column; }
+  .hero-cta-group { flex-direction: column; align-items: stretch; }
   .btn { justify-content: center; }
   .hero-title { letter-spacing: -1px; }
+  .hero-stats { gap: 18px 28px; }
+}
+
+@media (max-width: 420px) {
+  .checkbox-grid { grid-template-columns: 1fr; }
+  .hero-stat-num { font-size: 1.8rem; }
+  .about-badge { width: 78px; height: 78px; }
+  .about-badge strong { font-size: 1.5rem; }
+  .about-badge span { font-size: .56rem; }
+  .form-card { padding: 22px 16px; }
+  .contact-card, .contact-social-card { padding: 24px; }
+  .wa-float { width: 50px; height: 50px; font-size: 1.25rem; bottom: max(16px, calc(env(safe-area-inset-bottom, 0px) + 10px)); right: max(16px, calc(env(safe-area-inset-right, 0px) + 10px)); }
+}
+
+@media (max-width: 340px) {
+  .hero-cta-group .btn span { font-size: .8rem; }
+  .price-table th, .price-table td { padding: 14px 14px; font-size: .82rem; }
+}
+
+/* Landscape phones: hero shouldn't force a tall, empty viewport */
+@media (max-height: 480px) and (orientation: landscape) {
+  #home { min-height: auto; padding: 100px 28px 40px; }
 }
 
 /* ============================================================
@@ -1116,6 +1197,7 @@ footer strong { color: var(--red); }
 <!-- ==================== SIDEBAR ==================== -->
 <nav id="mySidebar">
   <div class="sidebar-logo">
+    <button class="sidebar-close-btn" onclick="closeMenu()" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
     <div class="brand-name">SANTEX<span>EREVAN</span></div>
     <div class="tagline">Professional Masters Team</div>
     <div class="sidebar-divider"></div>
@@ -1360,6 +1442,7 @@ footer strong { color: var(--red); }
       <div class="section-label" data-i18n="prices_label">Стоимость</div>
       <h2 class="section-title" data-i18n="prices_title">Тарифы на работы</h2>
       <div class="section-line"></div>
+      <div class="price-table-wrap">
       <table class="price-table">
         <thead>
           <tr>
@@ -1375,27 +1458,28 @@ footer strong { color: var(--red); }
             <td><div class="price-val" data-i18n="p1_price">Договорной</div></td>
           </tr>
           <tr>
-            <td data-i18n="p2_name">Укладка плитки (стены/пол)</td>
-            <td><span class="price-unit">м²</span></td>
-            <td><div class="price-val" data-i18n="p2_price">от 8 000</div></td>
+            <td data-i18n="p2_name">Визит</td>
+            <td><span class="price-unit"></span></td>
+            <td><div class="price-val" data-i18n="p2_price">6000</div></td>
           </tr>
           <tr>
             <td data-i18n="p3_name">Монтаж инсталляции с унитазом</td>
             <td><span class="price-unit" data-i18n="p3_unit">комплект</span></td>
-            <td><div class="price-val">30 000</div></td>
+            <td><div class="price-val" data-i18n="p3_price">на месте</div></td>
           </tr>
           <tr>
             <td data-i18n="p4_name">Разводка точки воды (х/г + слив)</td>
             <td><span class="price-unit" data-i18n="p4_unit">точка</span></td>
-            <td><div class="price-val">15 000</div></td>
+            <td><div class="price-val" data-i18n="p4_price">на месте</div></td>
           </tr>
           <tr>
             <td data-i18n="p5_name">Установка душевого ограждения</td>
             <td><span class="price-unit" data-i18n="p5_unit">шт</span></td>
-            <td><div class="price-val" data-i18n="p5_price">от 25 000</div></td>
+            <td><div class="price-val" data-i18n="p5_price">на месте</div></td>
           </tr>
         </tbody>
       </table>
+      </div>
     </div>
   </section>
 
@@ -1623,10 +1707,12 @@ function changeSlide(n) { goSlide(currentIdx + n); }
 function openMenu() {
   document.getElementById('mySidebar').classList.add('open');
   document.getElementById('overlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
 }
 function closeMenu() {
   document.getElementById('mySidebar').classList.remove('open');
   document.getElementById('overlay').style.display = 'none';
+  document.body.style.overflow = '';
 }
 
 /* ---- ACTIVE NAV HIGHLIGHT ---- */
@@ -1765,7 +1851,7 @@ var translations = {
     s3_tag:'Կոնստրուկցիաներ', s3_title:'Գիպսաստվարաթուղթ', s3_body:'Ամրացված միջնորմների, կեղծ պատերի, բազմաստիճան առաստաղների և տուփերի կառուցում։ Օգտագործում ենք միայն խոնավակայուն գիպսաստվարաթուղթ։ Թաքնված ստուգատոն-անտեսանելի դռների մոնտաժ։',
     s4_tag:'Սանտեխնիկա', s4_title:'Սանֆայանս և սանտեխնիկա', s4_body:'Ինստալյացիաների, թաքնված խառնիչների (iBox), ցնցուղային ձագարների, հատուկ կանգնած լոգարանների, հիգիենիկ ցնցուղների և ցանկացած ձևաչափի լվացարանների տեղադրում։',
     s5_tag:'Էլեկտրիկա', s5_title:'Էլեկտրական մոնտաժ', s5_body:'Հրակայուն մալուխի անցկացում, կառավարման վահանակի հավաքում, խորշերում LED-լուսավորության մոնտաժ, խոնավությունից պաշտպանված վարդակների (IP44) և ջերմակարգավորիչների տեղադրում։',
-    s6_tag:'Պատեր', s6_title:'Սվաղ և հարթեցում', s6_body:'Պատերի բարձր ճշգրտությամբ հարթեցում փարոսների օգնությամբ։ Լոգանքի և ցնցուղի տեղադրման գոտիներում 90° անկյունների պահպանում՝ սալիկի կատարյալ հարմայ կپیوستmannes անդ ապահովելու համար։',
+    s6_tag:'Պատեր', s6_title:'Սվաղ և հարթեցում', s6_body:'Պատերի բարձր ճշգրտությամբ հարթեցում փարոսների օգնությամբ։ Լոգանքի և ցնցուղի տեղադրման գոտիներում 90° անկյունների պահպանում՝ սալիկի կատարյալ հարմայ ապահովելու համար։',
     s7_tag:'Ջեռուցում', s7_title:'Ջեռուցման համակարգ', s7_body:'Տաք հատակի համակարգերի հաշվարկ և մոնտաժ (ջրային/էլեկտրական)։ Ջեռուցման կոլեկտորների, ներհատակային կոնվեկտորների տեղադրում և ռադիատորների փոխարինում։',
     s8_tag:'Սկիզբ', s8_title:'Ապամոնտաժ', s8_body:'Հին սանտեխնիկական կաբինների քանդում, բացվածքների ադամանդե կտրատում, հին ծածկույթների հեռացում։ Աղբի հանում և բացում՝ աշխատանքների սկզբից առաջ սենյակի լրիվ մաքրությամբ։',
     s9_tag:'Ավարտ', s9_title:'Ներկագործական աշխատանքներ', s9_body:'Պատերի նախապատրաստում ներկման համար, ապակեթելի (սարդոստայն) կպցնում, ձկնաբույծ թթու նյութի կիրառում և պրեմիում լվացվող ներկերով ծածկում։',
